@@ -1,0 +1,7 @@
+<h2>Your Preferences</h2>
+<a href="{{ url_for('main.index') }}">Back to Home</a>
+<ul>
+{% for pref in preferences %}
+    <li>Product ID: {{ pref.product_id }}</li>
+{% endfor %}
+</ul>
