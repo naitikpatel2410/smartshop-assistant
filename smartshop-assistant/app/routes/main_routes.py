@@ -20,13 +20,12 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
-        # Fetch user by username
+        
         user = User.query.filter_by(username=username).first()
 
-        # Check if user exists and passwords match
-        if user and user.password == password:  # Not hashing passwords, as per your request
+        if user and user.password == password:  
             login_user(user)
-            return redirect(url_for('main.index'))  # Redirect to the home page after login
+            return redirect(url_for('main.index')) 
         else:
             return "Invalid login credentials", 400
 
@@ -38,17 +37,15 @@ def logout():
     logout_user()
     return redirect(url_for('main.login'))
 
-# Home Page (Shows Products and Preferences)
 @main_bp.route('/')
 @login_required
 def index():
-    # Show products and preferences
+    
     products = Product.query.all()
     preferences = ProductPreference.query.filter_by(user_id=current_user.id).all()
     return render_template('index.html', products=products, preferences=preferences)
 
 
-# Search Route
 @main_bp.route('/search', methods=['POST'])
 @login_required
 def search():
@@ -58,24 +55,20 @@ def search():
 
 
 
-# Add Product Preference Route (Saves preference without redirecting)
 @main_bp.route('/add_preference/<int:product_id>', methods=['POST'])
 @login_required
 def add_preference(product_id):
-    # Save the user preference without redirecting
+    
     preference = ProductPreference(user_id=current_user.id, product_id=product_id)
     db.session.add(preference)
     db.session.commit()
 
-    # Fetch updated preferences and products
     products = Product.query.all()
     preferences = ProductPreference.query.filter_by(user_id=current_user.id).all()
 
-    # Render the same page with updated data
     return render_template('index.html', products=products, preferences=preferences)
 
 
-# Dashboard Route (Shows the saved preferences)
 @main_bp.route('/dashboard')
 @login_required
 def dashboard():

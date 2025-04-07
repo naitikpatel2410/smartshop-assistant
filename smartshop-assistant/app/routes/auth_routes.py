@@ -6,9 +6,9 @@ auth_bp = Blueprint('auth', __name__)
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
-    # Check if user is already logged in
+    
     if 'user_id' in session:
-        return redirect(url_for('main.index'))  # Redirect to the home page if already logged in
+        return redirect(url_for('main.index')) 
 
     if request.method == 'POST':
         username = request.form['username']
@@ -18,7 +18,7 @@ def login():
 
         if user and user.password == password:
             session['user_id'] = user.id
-            return redirect(url_for('main.index'))  # Redirect to the home page after successful login
+            return redirect(url_for('main.index'))  
         else:
             flash("Invalid credentials!")
 
@@ -27,5 +27,5 @@ def login():
 
 @auth_bp.route('/logout')
 def logout():
-    session.pop('user_id', None)  # Remove the user from session to log them out
-    return redirect(url_for('auth.login'))  # Redirect to login page after logout
+    session.pop('user_id', None)  
+    return redirect(url_for('auth.login'))  

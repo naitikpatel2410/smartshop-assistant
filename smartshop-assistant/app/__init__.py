@@ -3,7 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 import os
 
-# Initialize extensions
 db = SQLAlchemy()
 login_manager = LoginManager()
 
@@ -21,7 +20,6 @@ def create_app():
     from app.routes.main_routes import main_bp
     app.register_blueprint(main_bp)
 
-    # ⬇️ Moved user_loader HERE to avoid circular import
     from app.models.user import User
 
     @login_manager.user_loader
